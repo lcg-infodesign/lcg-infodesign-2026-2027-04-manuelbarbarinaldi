@@ -15,40 +15,32 @@
   <body>
 <!-- Fascia laterale sinistra: titolo e legenda -->
 <aside id="legenda">
-  <h1>I Nobel, decennio per decennio</h1>
-  <p class="intro">
-    Ogni riga è un decennio, ogni colonna una categoria di premio.
-    Passa il mouse su un cerchio per leggere i numeri, clicca su uno spicchio
-    per vedere i nomi dei laureati.
-  </p>
+ 
+  <h1>Legenda</h1>
 
   <h2>Come leggere la visualizzazione</h2>
 
-  <div class="voce">
-    <h3>Righe: decenni</h3>
-    <p>Dal 1900s (1901-1909) al 2020s (fino al 2026).</p>
-  </div>
 
   <div class="voce">
     <h3>Colonne e colori: categorie</h3>
     <ul class="categorie">
-      <li><span class="quadrato" style="background:#2F5FA8"></span>Fisica</li>
-      <li><span class="quadrato" style="background:#2A9D8F"></span>Chimica</li>
-      <li><span class="quadrato" style="background:#E0452B"></span>Medicina</li>
-      <li><span class="quadrato" style="background:#E9A23B"></span>Letteratura</li>
-      <li><span class="quadrato" style="background:#7BA05B"></span>Pace</li>
-      <li><span class="quadrato" style="background:#8E5BA8"></span>Economia</li>
+      <li><span class="quadrato" style="background:#5B9BFF"></span>Fisica</li>
+      <li><span class="quadrato" style="background:#3FD1BE"></span>Chimica</li>
+      <li><span class="quadrato" style="background:#FF6B4A"></span>Medicina</li>
+      <li><span class="quadrato" style="background:#FFC247"></span>Letteratura</li>
+      <li><span class="quadrato" style="background:#8FD16B"></span>Pace</li>
+      <li><span class="quadrato" style="background:#C58BFF"></span>Economia</li>
     </ul>
   </div>
+
 
   <div class="voce">
     <h3>Dimensione: numero di premi</h3>
     <p>
-      Più il cerchio è grande, più premi sono stati assegnati in quella
-      categoria in quel decennio. Se non c'è il cerchio, nessun premio.
+      Più il cerchio è grande, più premi sono stati assegnati. Se non c'è il cerchio, nessun premio.
     </p>
-   
   </div>
+
 
   <div class="voce">
     <h3>Spicchi: uomini e donne</h3>
@@ -58,10 +50,10 @@
       al numero di premi.
     </p>
     <svg width="220" height="64" viewBox="0 0 220 64">
-      <path d="M30,32 L30,6 A26,26 0 1 1 5.27,40.03 Z" fill="#555" />
-      <path d="M30,32 L5.27,40.03 A26,26 0 0 1 30,6 Z" fill="#555" fill-opacity="0.5" />
-      <text x="70" y="26" font-size="12">uomini (pieno)</text>
-      <text x="70" y="44" font-size="12">donne (più chiaro)</text>
+      <path d="M30,32 L30,6 A26,26 0 1 1 5.27,40.03 Z" fill="#EEE" />
+      <path d="M30,32 L5.27,40.03 A26,26 0 0 1 30,6 Z" fill="#EEE" fill-opacity="0.5" />
+      <text fill="#EEE" x="70" y="26" font-size="12">uomini (pieno)</text>
+      <text fill="#EEE" x="70" y="44" font-size="12">donne (più chiaro)</text>
     </svg>
   </div>
 
@@ -83,8 +75,8 @@
   </p>
 </aside>
 
-<!-- Parte destra: qui p5.js inserisce il canvas con la visualizzazione -->
+<!-- Parte destra -->
 <main id="area-glifi"></main>
-    <script src="sketch.js"></script>
+<script src="sketch.js"></script>
   </body>
 </html>
