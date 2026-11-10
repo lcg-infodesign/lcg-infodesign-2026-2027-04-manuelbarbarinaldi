@@ -112,7 +112,7 @@ function draw() {
   }
 
   let larghezzaColonna = (width - margineSinistro - margineDestro) / categories.length;
-  let diametroMassimo = min(larghezzaColonna, altezzaRiga) * 0.85;
+  let diametroMassimo = min(larghezzaColonna, altezzaRiga) * 0.95;
 
   hovered = false;
 
