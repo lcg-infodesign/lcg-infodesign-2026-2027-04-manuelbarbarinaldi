@@ -1,8 +1,83 @@
 html, body {
   margin: 0;
   padding: 0;
+  height: 100%;
+}
+
+body {
+  display: flex;
+  font-family: Helvetica, Arial, sans-serif;
+  color: #111;
 }
 
 canvas {
   display: block;
+}
+
+/* Fascia laterale sinistra */
+#legenda {
+  width: 300px;
+  min-width: 300px;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 24px 20px;
+  overflow-y: auto;
+  background: white;
+  border-right: 1px solid #ccc;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+#legenda h1 {
+  font-size: 26px;
+  margin: 0 0 12px 0;
+}
+
+#legenda h2 {
+  font-size: 16px;
+  margin: 28px 0 10px 0;
+  padding-top: 12px;
+  border-top: 1px solid #ccc;
+}
+
+#legenda h3 {
+  font-size: 14px;
+  margin: 0 0 4px 0;
+}
+
+#legenda p {
+  margin: 0 0 8px 0;
+}
+
+.voce {
+  margin-bottom: 16px;
+}
+
+/* Elenco delle categorie con il quadratino colorato */
+.categorie {
+  list-style: none;
+  margin: 4px 0 0 0;
+  padding: 0;
+}
+
+.categorie li {
+  display: flex;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.quadrato {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  margin-right: 8px;
+}
+
+/* Parte destra: area con scroll verticale */
+#area-glifi {
+  flex: 1;
+  height: 100%;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  background: #F5F5F5;
 }
