@@ -1,14 +1,12 @@
 // Variabili condivise: i valori letti qui possono essere usati da più funzioni.
 let data;
-let counts = {};
 let maxCount = 0;
 let decades = [];
-let backgroundColor = '#000000';
 
-// Opacità (0-255) dello spicchio "female": meno opaco di quello "male"
+// Opacità (0-255) dello spicchio female 
 let femaleAlpha = 120;
 
-// Categorie dei premi
+// Categorie dei premi, nell'ordine in cui compaiono come colonne
 let categories = [
   'Physics',
   'Chemistry',
@@ -28,7 +26,7 @@ let colorScale = {
   'Economic Sciences': '#C58BFF',
 }
 
-// Nomi delle categorie da mostrare
+// Traduce i nomi delle categorie da mostrare
 let nomiCategorie = {
   'Physics': 'Fisica',
   'Chemistry': 'Chimica',
@@ -69,44 +67,48 @@ async function setup() {
   canvas.parent("area-glifi");
   angleMode(DEGREES);
 
-// carico dataset
+  // loadTable(percorso, separatore, opzioni): "header" usa la prima riga come nomi delle colonne.
   data = await loadTable("assets/nobel_prize_laureates_1901_2026.csv", ",", "header");
 
+  // Cerco la cella con più premi (uomini + donne), necessaria per riportare tutti i cerchi alla stessa scala.
+  for (let r = 0; r < decades.length; r++) {
+    for (let c = 0; c < categories.length; c++) {
+      let total = contaPremi(categories[c], decades[r], "male") + contaPremi(categories[c], decades[r], "female");
 
- //contatore maschi/femmine 
-  for (let rowNumber = 0; rowNumber < data.getRowCount(); rowNumber++) {
-    let gender = data.getString(rowNumber, "gender");
-    // Escludo le organizzazioni
-    if (gender == "organization") {
-      continue;
-    }
-
-    let year = data.getNum(rowNumber, "awardYear");
-    let category = data.getString(rowNumber, "category");
-
-    // Decennio di appartenenza
-    let decade = floor(year / 10) * 10;
-
-    // Chiave unica per ogni cella: "Physics_1950"
-    let key = category + "_" + decade;
-
-    // Se è la prima volta che incontro questa cella, parto da zero uomini e zero donne
-    if (counts[key] == undefined) {
-      counts[key] = { male: 0, female: 0 };
-    }
-    counts[key][gender] += 1;
-
-    // Conserva il valore massimo, necessario per riportare tutti i cerchi alla stessa scala.
-    let total = counts[key].male + counts[key].female;
-    if (total > maxCount) {
-      maxCount = total;
+      if (total > maxCount) {
+        maxCount = total;
+      }
     }
   }
 }
 
-function draw() {
-  background(backgroundColor);
+// Conta quante righe del CSV corrispondono a categoria, decennio e genere indicati.
+// Le organizzazioni non vengono mai contate: il genere cercato è solo "male" o "female".
+function contaPremi(category, decade, gender) {
+  let conta = 0;
 
+  for (let rowNumber = 0; rowNumber < data.getRowCount(); rowNumber++) {
+    let year = data.getNum(rowNumber, "awardYear");
+
+    // Decennio di appartenenza
+    let rowDecade = floor(year / 10) * 10;
+
+    if (
+      data.getString(rowNumber, "category") == category &&
+      rowDecade == decade &&
+      data.getString(rowNumber, "gender") == gender
+    ) {
+      conta += 1;
+    }
+  }
+
+  return conta;
+}
+
+function draw() {
+  background("#000000");
+
+  // draw() parte anche prima che i dati siano caricati: aspetto.
   if (data == undefined) {
     return;
   }
@@ -114,9 +116,10 @@ function draw() {
   let larghezzaColonna = (width - margineSinistro - margineDestro) / categories.length;
   let diametroMassimo = min(larghezzaColonna, altezzaRiga) * 0.95;
 
+  // Riparte da "nessun cerchio sotto il mouse" a ogni fotogramma.
   hovered = false;
 
-  /*// Intestazione: il nome di ogni categoria sopra la sua colonna
+  // Intestazione: il nome di ogni categoria sopra la sua colonna
   noStroke();
   textAlign(CENTER, CENTER);
   textSize(13);
@@ -126,7 +129,7 @@ function draw() {
     fill(colorScale[categories[c]]);
     text(nomiCategorie[categories[c]], xCentro, hIntestazione / 2);
   }
-  textStyle(NORMAL);*/
+  textStyle(NORMAL);
 
   // Una riga per ogni decennio
   for (let r = 0; r < decades.length; r++) {
@@ -144,16 +147,14 @@ function draw() {
 
     // Un cerchio per ogni categoria
     for (let c = 0; c < categories.length; c++) {
-      let key = categories[c] + "_" + decades[r];
+      let male = contaPremi(categories[c], decades[r], "male");
+      let female = contaPremi(categories[c], decades[r], "female");
+      let total = male + female;
 
       // Se in questo decennio non ci sono premi per la categoria, salto la cella
-      if (counts[key] == undefined) {
+      if (total == 0) {
         continue;
       }
-
-      let male = counts[key].male;
-      let female = counts[key].female;
-      let total = male + female;
 
       // Scala logaritmica: i totali vanno da 1 a 28, con il lineare i piccoli sparirebbero
       let diametro = map(log(total), 0, log(maxCount), diametroMinimo, diametroMassimo);
@@ -191,7 +192,6 @@ function draw() {
 
   // Evidenzia lo spicchio sotto il mouse e mostra il testo
   if (hovered) {
-    cursor(HAND);
 
     noFill();
     stroke(255);
@@ -204,7 +204,7 @@ function draw() {
     }
     let testo = nomiCategorie[hoveredCategory] + ", " + hoveredDecade + "s\n" + genere + ": " + hoveredCount + "\nClicca per vedere i nomi";
 
-    // vicino al bordo destro va a sinistra
+    // L'offset evita di disegnare il testo sotto il puntatore; vicino al bordo destro va a sinistra
     let xTesto = mouseX + 14;
     if (mouseX > width - 200) {
       xTesto = mouseX - 196;
@@ -218,9 +218,7 @@ function draw() {
     textAlign(LEFT, TOP);
     textSize(12);
     text(testo, xTesto, mouseY + 14);
-  } else {
-    cursor(ARROW);
-  }
+  } 
 }
 
 // Disegna un cerchio diviso in due spicchi: male (pieno) e female (meno opaco).
@@ -255,7 +253,7 @@ function mousePressed() {
   }
 }
 
-// Larghezza della parte destra
+// Larghezza della parte destra della pagina (dove sta il canvas)
 function larghezzaArea() {
   return document.getElementById("area-glifi").clientWidth;
 }
