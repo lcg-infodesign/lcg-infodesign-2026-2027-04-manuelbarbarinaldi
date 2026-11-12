@@ -13,6 +13,70 @@
   </head>
 
   <body>
-    <script src="sketch.js"></script>
+<!-- Fascia laterale sinistra: titolo e legenda -->
+<aside id="legenda">
+ 
+  <h1>Legenda</h1>
+
+  <h2>Come leggere la visualizzazione</h2>
+
+
+  <div class="voce">
+    <h3>Colonne e colori: categorie</h3>
+    <ul class="categorie">
+      <li><span class="quadrato" style="background:#5B9BFF"></span>Fisica</li>
+      <li><span class="quadrato" style="background:#3FD1BE"></span>Chimica</li>
+      <li><span class="quadrato" style="background:#FF6B4A"></span>Medicina</li>
+      <li><span class="quadrato" style="background:#FFC247"></span>Letteratura</li>
+      <li><span class="quadrato" style="background:#8FD16B"></span>Pace</li>
+      <li><span class="quadrato" style="background:#C58BFF"></span>Economia</li>
+    </ul>
+  </div>
+
+
+  <div class="voce">
+    <h3>Dimensione: numero di premi</h3>
+    <p>
+      Più il cerchio è grande, più premi sono stati assegnati. Se non c'è il cerchio, nessun premio.
+    </p>
+  </div>
+
+
+  <div class="voce">
+    <h3>Spicchi: uomini e donne</h3>
+    <p>
+      Ogni cerchio è diviso in due spicchi: lo spicchio pieno sono gli uomini,
+      quello più chiaro le donne. L'ampiezza dello spicchio è proporzionale
+      al numero di premi.
+    </p>
+    <svg width="220" height="64" viewBox="0 0 220 64">
+      <path d="M30,32 L30,6 A26,26 0 1 1 5.27,40.03 Z" fill="#EEE" />
+      <path d="M30,32 L5.27,40.03 A26,26 0 0 1 30,6 Z" fill="#EEE" fill-opacity="0.5" />
+      <text fill="#EEE" x="70" y="26" font-size="12">uomini (pieno)</text>
+      <text fill="#EEE" x="70" y="44" font-size="12">donne (più chiaro)</text>
+    </svg>
+  </div>
+
+  <h2>Perché la scala logaritmica</h2>
+  <p>
+    Il numero di premi cambia molto da cella a cella: da 1 a 28 (Fisica,
+    anni 2000). Con una scala lineare i cerchi con pochi premi sarebbero
+    28 volte più piccoli del massimo, quasi invisibili.
+  </p>
+  <p>
+    Il logaritmo comprime i valori grandi: ogni volta che i premi
+    raddoppiano, il diametro aumenta sempre della stessa quantità.
+    Così si distinguono sia le celle piccole sia quelle grandi.
+  </p>
+
+  <h2>Nota sui dati</h2>
+  <p>
+    Sono esclusi i premi assegnati a organizzazioni (31, quasi tutti per la Pace).
+  </p>
+</aside>
+
+<!-- Parte destra -->
+<main id="area-glifi"></main>
+<script src="sketch.js"></script>
   </body>
 </html>
